@@ -1,9 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
 import React from "react";
 
 const NavBar = () => {
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-white dark:bg-cyan-500">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -47,9 +48,16 @@ const NavBar = () => {
             </li>
           </ul>
         </div>
-        <Link href="/" className="btn btn-ghost normal-case text-xl">
-          Troydon Fitness
-        </Link>
+        <div className="flex-1 bg-bwhite dark:bg-grey-900">
+          <Link href="/" className="btn btn-ghost normal-case text-xl ">
+            <Image
+              src="/troydonfitnesslogo.png"
+              alt="Fitness Image"
+              width={80}
+              height={60}
+            />
+          </Link>
+        </div>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
@@ -77,7 +85,7 @@ const NavBar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link href="appointments" className="btn">
+        <Link href="/appointments" className="btn">
           Book Appointment
         </Link>
       </div>

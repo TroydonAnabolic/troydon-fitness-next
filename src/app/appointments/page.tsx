@@ -1,3 +1,4 @@
+import PersonalTrainingForm from "@/components/PersonalTrainingForm";
 import React from "react";
 
 const BookAppointment = () => {
@@ -5,7 +6,7 @@ const BookAppointment = () => {
   return (
     <div>
       <title> Book Appointments</title>
-      <section> Fill in your details here</section>
+      <PersonalTrainingForm />
     </div>
   );
 };
