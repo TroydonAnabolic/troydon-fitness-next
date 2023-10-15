@@ -1,4 +1,4 @@
-import PersonalTrainingForm from "@/components/PersonalTrainingForm";
+import PersonalTrainingForm from "@/app/components/PersonalTrainingForm";
 import React from "react";
 
 const BookAppointment = () => {

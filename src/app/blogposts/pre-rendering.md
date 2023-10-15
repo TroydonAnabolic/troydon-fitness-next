@@ -1,5 +1,5 @@
 ---
-title: "Sample Blog Post"
+title: "Two Forms of Pre-rendering"
 date: "2023-10-11"
 author: "Troydon Luicien"
 description: "This is a sample blog post."
