@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import Posts from "@/app/components/Posts";
 
 const Blog = () => {

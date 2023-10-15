@@ -1,7 +1,7 @@
 import React from "react";
 import ListItem from "./ListItem";
 import Image from "next/image";
-import { getSortedPostsData } from "../../../lib/posts";
+import { getSortedPostsData } from "@/lib/posts";
 
 const Posts = () => {
   const posts = getSortedPostsData();
