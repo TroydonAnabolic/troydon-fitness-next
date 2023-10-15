@@ -3,6 +3,7 @@ import React from "react";
 const PersonalTrainingServices = () => {
   return (
     <div className="py-16 bg-gray-100 dark:bg-gray-800">
+      <title> Personal Training | Troydon Fitness </title>
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-10 text-center">
           Personal Training Services

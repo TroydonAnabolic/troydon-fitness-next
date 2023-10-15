@@ -4,6 +4,7 @@ import Image from "next/image";
 const ContactUs = () => {
   return (
     <div className="py-16 bg-gray-100 dark:bg-gray-800">
+      <title> Contact Us | Troydon Fitness </title>
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="md:w-1/2 m-12">
