@@ -10,7 +10,7 @@ import Footer from "./Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Troydon Fitness",
+  title: "Troydon Fitness in NZ",
   description: "Personal Training services",
 };
 
