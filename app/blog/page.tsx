@@ -1,7 +1,10 @@
 import React from "react";
 import Posts from "@/app/components/Posts";
+import { getSortedPostsData } from "@/lib/posts";
 
 const Blog = () => {
+  const posts = getSortedPostsData();
+
   return (
     <div className="py-16">
       <title> Blog | Troydon Fitness </title>
@@ -10,7 +13,7 @@ const Blog = () => {
           Blog
         </h2>
         <div className="flex flex-col md:flex-row gap-12">
-          <Posts />
+          <Posts posts={posts} />
         </div>
       </div>
     </div>
