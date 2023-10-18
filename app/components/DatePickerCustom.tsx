@@ -2,11 +2,16 @@ import React, { useState } from "react";
 import { DayPicker, DateRange, DayClickEventHandler } from "react-day-picker";
 import { addMonths, isSameMonth, isSameDay } from "date-fns";
 
-const DatePickerCustom = () => {
-  const [selectedDays, setSelectedDays] = useState<Date[]>([]);
+type Props = {
+  selectedDays: Date[];
+  setSelectedDays: React.Dispatch<React.SetStateAction<Date[]>>;
+};
+
+const DatePickerCustom = ({ selectedDays, setSelectedDays }: Props) => {
   const today = new Date();
-  const nextMonth = addMonths(new Date(), 1);
-  const [month, setMonth] = useState<Date>(nextMonth);
+  const [month, setMonth] = useState<Date>(
+    new Date(Date.now() + 24 * 60 * 60 * 1000)
+  );
 
   const handleDayClick: DayClickEventHandler = (day, modifiers) => {
     const newSelectedDays = [...selectedDays];

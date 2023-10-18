@@ -5,7 +5,7 @@ import React from "react";
 // Nav bar sample from daisy UI Tailwind
 const NavBar = () => {
   return (
-    <div className="navbar bg-white dark:bg-cyan-500">
+    <div className="navbar bg-white dark:bg-sky-700">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -55,7 +55,7 @@ const NavBar = () => {
         <div className="flex-1 bg-bwhite dark:bg-grey-900">
           <Link href="/" className="btn btn-ghost normal-case text-xl ">
             <Image
-              src="/troydonfitnesslogo.png"
+              src="/troydon-fitness-logo-2.png"
               alt="Fitness Image"
               width={80}
               height={60}
