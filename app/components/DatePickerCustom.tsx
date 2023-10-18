@@ -9,9 +9,9 @@ type Props = {
 
 const DatePickerCustom = ({ selectedDays, setSelectedDays }: Props) => {
   const today = new Date();
-  const [month, setMonth] = useState<Date>(
-    new Date(Date.now() + 24 * 60 * 60 * 1000)
-  );
+  const minDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  const maxDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
+  const [month, setMonth] = useState<Date>(today);
 
   const handleDayClick: DayClickEventHandler = (day, modifiers) => {
     const newSelectedDays = [...selectedDays];
@@ -64,12 +64,21 @@ const DatePickerCustom = ({ selectedDays, setSelectedDays }: Props) => {
   return (
     <div className="flex justify-center items-cente bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
       <DayPicker
+        captionLayout="dropdown-buttons"
         min={1}
+        max={5}
         onDayClick={handleDayClick}
         selected={selectedDays}
         month={month}
+        fromDate={minDate}
+        toDate={maxDate}
         onMonthChange={setMonth}
         footer={footer}
+        styles={{
+          caption: { color: "#0ea5e9" },
+          dropdown: { backgroundColor: "#000" },
+        }}
+        className="text-sky-blue-500" // Apply the text color here
         // className="bg-gray-500 p-4"
       />
     </div>

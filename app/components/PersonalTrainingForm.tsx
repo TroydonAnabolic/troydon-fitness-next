@@ -179,6 +179,11 @@ export default function PersonalTrainingForm() {
                 selectedDays={selectedDays}
                 setSelectedDays={setSelectedDays}
               />
+              <input
+                type="hidden"
+                name="selectedDays"
+                value={JSON.stringify(selectedDays)}
+              />
             </div>
 
             <div>

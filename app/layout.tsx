@@ -6,7 +6,6 @@ import Image from "next/image";
 import Link from "next/link";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

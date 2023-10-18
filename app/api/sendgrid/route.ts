@@ -3,15 +3,17 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 
 sendgrid.setApiKey(String(process.env.SENDGRID_API_KEY));
-const now = new Date(
-  new Date().toLocaleString("en-NZ", {
-    timeZone: "Pacific/Auckland",
-  })
-);
-const dateArrSchema = z
-  .date()
-  .min(new Date(now.getTime() + 24 * 60 * 60 * 1000))
-  .max(new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000));
+
+// const now = new Date(
+//   new Date().toLocaleString("en-NZ", {
+//     timeZone: "Pacific/Auckland",
+//   })
+// );
+
+// const dateSchema = z
+//   .date()
+//   .min(new Date(now.getTime() + 24 * 60 * 60 * 1000))
+//   .max(new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000));
 
 const sendEmailSchema = z.object({
   fullName: z.string().min(1).max(255),
@@ -19,11 +21,28 @@ const sendEmailSchema = z.object({
   number: z.string().min(8).max(13),
   subject: z.string().min(1).max(255),
   message: z.string().min(1),
-  selectedDays: z.array(dateArrSchema),
+  // selectedDays: z.string().refine(
+  //   (data) => {
+  //     try {
+  //       const dates = JSON.parse(data);
+  //       return (
+  //         Array.isArray(dates) &&
+  //         dates.every((date) => dateSchema.safeParse(date).success)
+  //       );
+  //     } catch (error) {
+  //       return false;
+  //     }
+  //   },
+  //   {
+  //     message: "Invalid date format in selectedDays",
+  //   }
+  // ),
 });
 
-const formatSelectedDays = (selectedDays: Date[]): string => {
-  const formattedDates = selectedDays.map((date) => {
+const formatSelectedDays = (selectedDays: string): string => {
+  const dates: Date[] = JSON.parse(selectedDays);
+
+  const formattedDates = dates.map((date) => {
     const formattedDate = new Date(date).toLocaleString("en-NZ", {
       day: "2-digit",
       month: "2-digit",
@@ -41,19 +60,20 @@ const formatSelectedDays = (selectedDays: Date[]): string => {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
+
   // Convert date strings to Date objects
-  body.selectedDays = body.selectedDays.map((dateString: string) => {
-    const date = new Date(dateString);
-    date.toLocaleString("en-NZ", {
-      timeZone: "Pacific/Auckland",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-    return date;
-  });
+  // body.selectedDays = body.selectedDays.map((dateString: string) => {
+  //   const date = new Date(dateString);
+  //   date.toLocaleString("en-NZ", {
+  //     timeZone: "Pacific/Auckland",
+  //     year: "numeric",
+  //     month: "2-digit",
+  //     day: "2-digit",
+  //     hour: "2-digit",
+  //     minute: "2-digit",
+  //   });
+  //   return date;
+  // });
 
   const validation = sendEmailSchema.safeParse(body);
   if (!validation.success) {
