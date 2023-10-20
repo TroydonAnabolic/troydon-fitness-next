@@ -115,7 +115,7 @@ export async function POST(req: NextRequest) {
               ${formatSelectedDays(body.selectedDays)}
               <br>
               </div>
-              <img src="https://www.troydonfitness.smartaitrainer.com/_next/image?url=%2Ftroydonfitnesslogo.png&w=96&q=75" class="logo-image" style="height: 50px;width: 50px;border-radius: 5px;overflow: hidden;">
+              <img src="https://www.troydonfitness.smartaitrainer.com/_next/image?url=%2Ftroydon-fitness-logo-2.png&w=96&q=75" class="logo-image" style="height: 50px;width: 50px;border-radius: 5px;overflow: hidden;">
               <p class="footer" style="font-size: 16px;padding-bottom: 20px;border-bottom: 1px solid #D1D5DB;">Regards<br>Troydon Fitness Admin<br>Personal Trainers<br>+64 224319560</p>
               <div class="footer-links" style="display: flex;justify-content: center;align-items: center;">
                 <a href="https://troydonfitness.smartaitrainer.com/" style="text-decoration: none;margin: 8px;color: #9CA3AF;">Website</a>

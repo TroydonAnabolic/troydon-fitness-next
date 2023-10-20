@@ -62,10 +62,11 @@ export default function PersonalTrainingForm() {
     //e.preventDefault();
 
     let isValidForm = handleValidation();
-    console.log("Form valid" + isValidForm);
+    console.log("Form valid: " + isValidForm);
     if (isValidForm) {
       setButtonText("Sending");
 
+      // TODO: May need to convert selected days to UTC after selection
       const res = await fetch("/api/sendgrid", {
         body: JSON.stringify({
           email: email,

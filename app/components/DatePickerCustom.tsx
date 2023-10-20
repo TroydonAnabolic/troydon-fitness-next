@@ -76,10 +76,9 @@ const DatePickerCustom = ({ selectedDays, setSelectedDays }: Props) => {
         footer={footer}
         styles={{
           caption: { color: "#0ea5e9" },
-          dropdown: { backgroundColor: "#000" },
+          dropdown: { backgroundColor: "#d1d5db" },
         }}
         className="text-sky-blue-500" // Apply the text color here
-        // className="bg-gray-500 p-4"
       />
     </div>
   );

@@ -45,6 +45,11 @@ const NavBar = () => {
                 <li>
                   <Link href="/services/mealPlans">Meal Plans</Link>
                 </li>
+                <li>
+                  <Link href="/services/trainingPrograms">
+                    Training Programs
+                  </Link>
+                </li>
               </ul>
             </li>
             <li>
@@ -82,6 +87,11 @@ const NavBar = () => {
                 </li>
                 <li>
                   <Link href="/services/mealPlans">Meal Plans</Link>
+                </li>
+                <li>
+                  <Link href="/services/trainingPrograms">
+                    Training Programs
+                  </Link>
                 </li>
               </ul>
             </details>

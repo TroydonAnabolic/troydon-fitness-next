@@ -11,7 +11,7 @@ const Posts: React.FC<PostsProps> = ({ posts }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredPosts = posts.filter((post) =>
-    post.title.toLowerCase().includes(searchTerm.toLowerCase())
+    post.title?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (

@@ -16,8 +16,9 @@ const PersonalTrainingServices = () => {
             stronger, leaner you.
           </p>
 
-          <div className="flex flex-col md:flex-row space-y-8 md:space-x-8">
-            <div className="md:w-1/2 m-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Section 1: Essential Fitness */}
+            <div>
               <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
                 Essential Fitness (Once a Week)
               </h3>
@@ -28,7 +29,9 @@ const PersonalTrainingServices = () => {
                 $65 per session.
               </p>
             </div>
-            <div className="md:w-1/2 m-12">
+
+            {/* Section 2: Balanced Transformation */}
+            <div>
               <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
                 Balanced Transformation (Three Times a Week)
               </h3>
@@ -39,10 +42,9 @@ const PersonalTrainingServices = () => {
                 $60 per session.
               </p>
             </div>
-          </div>
 
-          <div className="flex flex-col md:flex-row space-y-8 md:space-x-8">
-            <div className="md:w-1/2 m-12">
+            {/* Section 3: Total Body Mastery */}
+            <div>
               <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
                 Total Body Mastery (Five Times a Week)
               </h3>
@@ -53,7 +55,22 @@ const PersonalTrainingServices = () => {
                 $50 per session.
               </p>
             </div>
-            <div className="md:w-1/2 m-12">
+
+            {/* Section 4: Zoom PT Sessions */}
+            <div>
+              <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+                Zoom PT Sessions
+              </h3>
+              <p className="text-gray-800 dark:text-gray-300 leading-relaxed mb-6">
+                Convenient sessions over Zoom.
+              </p>
+              <p className="text-gray-800 dark:text-gray-300 leading-relaxed mb-6">
+                $30 per session.
+              </p>
+            </div>
+
+            {/* Section 5: Customized Packages */}
+            <div>
               <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
                 Customized Packages
               </h3>

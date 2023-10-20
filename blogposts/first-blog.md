@@ -5,24 +5,28 @@ author: Troydon Luicien
 description: How I entered the realm of bodybuilding and achieved my physique
 ---
 
-# My Journey into Fitness and Bodybuilding 
+# My Journey into Fitness and Bodybuilding
+
 &nbsp;
 
 ![My Transformation](/blogimages/transformation.jpg)
-&nbsp;  
+&nbsp;
 
 ## Introduction
-&nbsp; 
+
+&nbsp;
 
 I'm a 31-year-old bodybuilder, personal trainer, and software developer. Fitness has been a central part of my life for years. On average, I hit the gym 5-6 times a week, dedicating about 1.5 hours each session. Whether by car or push bike when I want to get some cardio in, I make my way to the gym. When not at the gym, I'm constantly learning and honing my skills, be it in fitness or software development. Improvement is my daily mantra.
 
 My hobbies extend to the beach, dancing, and karaoke. Music-wise, I have an eclectic taste, but I find myself most drawn to the raw energy of nu-metal bands like Slipknot, Disturbed, Mudvayne, and Korn. I also like other hard rock bands, pop, country, classic etc.
 
 &nbsp;
+
 ## Early Inspiration
+
 &nbsp;
 
-The anime series Dragon Ball Z ignited my fascination with musclular look and strength. As a kid, I'd occassionally smash out some push ups, or curl using small dumbbells at home, in the hopes of looking like the characters. Despite my modest stature, being short, and small framed, I possessed an uncanny strength that often outmatched my larger peers, mostly from willpower.
+The anime series Dragon Ball Z ignited my fascination with musclular look and strength. As a kid, I'd occassionally smash out some push ups, or curl using small dumbbells at home, in the hopes of looking like the characters. Despite my modest stature, being short, and small framed, I possessed an uncanny strength that often outmatched my larger peers.
 
 &nbsp;
 
@@ -30,11 +34,9 @@ The anime series Dragon Ball Z ignited my fascination with musclular look and st
 
 &nbsp;
 
-
 In my late teens, the sedentary lifestyle and video game addiction took a toll. Spending up to 12 hours a day in virtual worlds was my coping mechanism. Although I was grappling with personal issues, this escape helped me navigate through.
 
 &nbsp;
-
 
 ## A Turning Point
 
@@ -56,7 +58,7 @@ At 20, I resolved to change my life's trajectory. A commercial gym membership an
 
 &nbsp;
 
-Going from a lanky 55kg to a robust 70kg was a turning point. The recognition from others, especially women, and unsolicited compliments fueled my motivation exponentially.
+Going from a lanky 55kg to a robust 70kg was a turning point. The recognition from others, especially women, and unsolicited compliments fueled my motivation.
 
 &nbsp;
 

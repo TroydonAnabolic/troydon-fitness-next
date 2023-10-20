@@ -1,8 +1,9 @@
 import React from "react";
 import Image from "next/image";
+import TrainerPortfolio from "../components/TrainerPortfolio";
 const About = () => {
   return (
-    <div className="py-16 light:bg-gray-100 ">
+    <div className="py-16 light:bg-gray-100">
       <title> About | Troydon Fitness </title>
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center mb-10">
@@ -56,6 +57,25 @@ const About = () => {
               achievements.
             </p>
           </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 mt-6">
+        <div className="max-w-3xl mx-auto text-center mb-10">
+          <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-4">
+            Trainer Portfolios
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <TrainerPortfolio
+            name="Troydon Luicien"
+            image="/troydon-face-pic.jpg"
+            experience="Experience in PT: 1 years"
+            trainingExperience="Training Experience: 14 years weightlifting"
+            about="I'm a 31-year-old bodybuilder, personal trainer, and software developer. Fitness has been a central part of my life for years. On average, I hit the gym 5-6 times a week, dedicating about 1.5 hours each session. Whether by car or push bike when I want to get some cardio in, I make my way to the gym. When not at the gym, I'm constantly learning and honing my skills, be it in fitness or software development. Improvement is my daily mantra.
+            My hobbies extend to the beach, dancing, and karaoke. Music-wise, I have an eclectic taste, but I find myself most drawn to the raw energy of nu-metal bands like Slipknot, Disturbed, Mudvayne, and Korn. I also like other hard rock bands, pop, country, classic etc."
+            qualifications="Qualifications: Certificate In Fitness (Employed Personal Trainer) - Fitlink"
+          />
         </div>
       </div>
     </div>
