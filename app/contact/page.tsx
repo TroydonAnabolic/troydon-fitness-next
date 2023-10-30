@@ -44,7 +44,7 @@ const ContactUs = () => {
             Phone: (022) 431 9560
           </p>
           <p className="text-gray-800 dark:text-gray-300 leading-relaxed mb-6">
-            Email: info@troydonfitness.com
+            Email: troydonfitness@smartaitrainer.com
           </p>
           <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
             Business Hours
