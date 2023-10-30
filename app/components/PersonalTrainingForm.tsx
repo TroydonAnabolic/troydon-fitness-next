@@ -59,40 +59,41 @@ export default function PersonalTrainingForm() {
   //   Handling form submit
 
   const handleSubmit = async (e: any) => {
-    //e.preventDefault();
+    e.preventDefault();
 
-    let isValidForm = handleValidation();
-    console.log("Form valid: " + isValidForm);
-    if (isValidForm) {
-      setButtonText("Sending");
+    //let isValidForm = handleValidation();
+    //console.log("Form valid: " + isValidForm);
+    //if (isValidForm) {
+    setButtonText("Sending");
 
-      // TODO: May need to convert selected days to UTC after selection
-      const res = await fetch("/api/sendgrid", {
-        body: JSON.stringify({
-          email: email,
-          fullname: fullname,
-          subject: subject,
-          message: message,
-          selectedDays: selectedDays,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-      });
+    // TODO: May need to convert selected days to UTC after selection
+    const res = await fetch("/api/sendgrid", {
+      body: JSON.stringify({
+        fullName: fullname,
+        email: email,
+        number: number,
+        subject: subject,
+        message: message,
+        selectedDays: JSON.stringify(selectedDays),
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
 
-      const { error } = await res.json();
-      if (error) {
-        console.log(error);
-        setShowSuccessMessage(false);
-        setShowFailureMessage(true);
-        setButtonText("Send");
-        return;
-      }
-      setShowSuccessMessage(true);
-      setShowFailureMessage(false);
+    const { status } = await res.json();
+    if (res.status == 400 || res.status == 500) {
+      console.log(res.statusText);
+      setShowSuccessMessage(false);
+      setShowFailureMessage(true);
       setButtonText("Send");
+      return;
     }
+    setShowSuccessMessage(true);
+    setShowFailureMessage(false);
+    setButtonText("Send");
+    //}
     console.log(fullname, email, subject, message);
   };
 
@@ -131,13 +132,13 @@ export default function PersonalTrainingForm() {
 
             <div>
               <label
-                htmlFor="number"
+                htmlFor="text"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 Phone Number
               </label>
               <input
-                type="number"
+                type="text"
                 id="name"
                 className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
                 placeholder="Enter your number here"
@@ -169,6 +170,7 @@ export default function PersonalTrainingForm() {
               />
             </div>
 
+            {/* Date Picker */}
             <div className="sm:col-span-2 ">
               <label
                 htmlFor="selectedDays"
@@ -176,6 +178,9 @@ export default function PersonalTrainingForm() {
               >
                 Select Availability
               </label>
+              <p className="block mb-2 text-xs font-medium text-gray-900 dark:text-gray-400">
+                *Specify preferred times in message field*
+              </p>
               <DatePickerCustom
                 selectedDays={selectedDays}
                 setSelectedDays={setSelectedDays}
@@ -186,7 +191,7 @@ export default function PersonalTrainingForm() {
                 value={JSON.stringify(selectedDays)}
               />
             </div>
-
+            {/* Subject */}
             <div>
               <label
                 htmlFor="subject"
@@ -207,7 +212,7 @@ export default function PersonalTrainingForm() {
                 }}
               />
             </div>
-
+            {/* Message */}
             <div className="sm:col-span-2">
               <label
                 htmlFor="notes"
