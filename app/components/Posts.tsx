@@ -1,7 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ListItem from "./ListItem";
 import Image from "next/image";
+import SignupModal from "./Modals/SignupModal";
+import { useSession } from "next-auth/react";
 
 interface PostsProps {
   posts: BlogPost[]; // Define the prop for posts
@@ -9,10 +11,27 @@ interface PostsProps {
 
 const Posts: React.FC<PostsProps> = ({ posts }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const { data: session } = useSession();
 
   const filteredPosts = posts.filter((post) =>
     post.title?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const modalRef = useRef<HTMLDialogElement | null>(null);
+
+  const openModal = () => {
+    if (modalRef.current) {
+      modalRef.current.showModal();
+    }
+  };
+
+  useEffect(() => {
+    if (!session) {
+      if (modalRef.current) {
+        modalRef.current.showModal();
+      }
+    }
+  }, [session]);
 
   return (
     <div>
@@ -26,18 +45,20 @@ const Posts: React.FC<PostsProps> = ({ posts }) => {
         />
       </div>
       <div className="flex flex-col md:flex-row gap-12">
-        <div className="max-h-[500px] overflow-y-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 no-scrollbar">
+        <div className="max-h-[500px] overflow-y-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 no-scrollbar relative">
           {filteredPosts.map((post) => (
-            <ListItem key={post.id} post={post} />
+            <ListItem key={post.id} post={post} session={session} />
           ))}
+          <SignupModal closeModal={openModal} modalRef={modalRef} />
         </div>
 
-        <div className="md:w-1/2 m-12">
+        <div className="md:w-1/2 m-12 relative">
           <Image
             src="/gym-black-and-white.jpg"
             alt="Gym Image"
-            width={600}
-            height={350}
+            width={800}
+            height={500}
+            className="w-full h-full object-cover"
           />
         </div>
       </div>

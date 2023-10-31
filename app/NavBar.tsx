@@ -1,6 +1,39 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
+
+function AuthButton() {
+  const { data: session } = useSession();
+
+  if (session) {
+    return (
+      <div className="flex items-center space-x-2">
+        <span className="pl-2">{session?.user?.name}</span>
+        <button
+          className="btn btn-primary text-white font-bold py-2 px-4 rounded"
+          onClick={() => signOut()}
+        >
+          Sign out
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center space-x-2 pr-4 pl-4">
+      <button
+        className="btn btn-primary text-white font-bold py-2 px-4 rounded"
+        onClick={() => signIn()}
+      >
+        Sign in
+      </button>
+    </div>
+  );
+}
 
 // Nav bar sample from daisy UI Tailwind
 const NavBar = () => {
@@ -105,6 +138,7 @@ const NavBar = () => {
         <Link href="/appointments" className="btn">
           Book Appointment
         </Link>
+        <AuthButton />
       </div>
     </div>
   );
