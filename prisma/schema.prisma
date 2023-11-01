@@ -1,12 +1,10 @@
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed when using a cloud provider that doesn't support the creation of new databases, like Heroku. Learn more: https://pris.ly/d/migrate-shadow
 }
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["referentialActions"] // You won't need this in Prisma 3.X or higher.
 }
 
 model Account {
@@ -22,6 +20,8 @@ model Account {
   scope              String?
   id_token           String?  @db.Text
   session_state      String?
+  emailVerified      Boolean?  @default(false)
+  refresh_token_expires_in       Int?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -44,6 +44,8 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  stripeCustomerId        String?
+  isActive                Boolean            @default(false)
 }
 
 model VerificationToken {
