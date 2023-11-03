@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import getFormattedDate from "@/lib/getFormattedDate";
 import { Session } from "next-auth";
+import { BlogPost } from "@/types";
 
 type Props = {
   post: BlogPost;

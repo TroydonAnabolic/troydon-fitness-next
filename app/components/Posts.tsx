@@ -4,6 +4,7 @@ import ListItem from "./ListItem";
 import Image from "next/image";
 import SignupModal from "./Modals/SignupModal";
 import { useSession } from "next-auth/react";
+import { BlogPost } from "@/types";
 
 interface PostsProps {
   posts: BlogPost[]; // Define the prop for posts
