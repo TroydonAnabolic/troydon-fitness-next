@@ -4,8 +4,15 @@ declare module "next-auth" {
   interface Session {
     user?: DefaultUser & {
       id: string;
-      stripeCustomerId?: string;
+      stripeCustomerId: string;
+      isActive: boolean;
+      isBasic: boolean;
     };
+  }
+  interface User extends DefaultUser {
+    stripeCustomerId: string;
+    isActive: boolean;
+    isBasic: boolean;
   }
 }
 

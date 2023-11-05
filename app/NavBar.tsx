@@ -21,13 +21,25 @@ function AuthButton() {
     );
   }
 
+  function handleCreateCheckoutSession(plan: any): void {
+    throw new Error("Function not implemented.");
+  }
+
+  let plan: any = "Basic";
+
   return (
     <div className="flex items-center space-x-2 pr-4 pl-4">
-      <button
+      {/* <button
         className="btn btn-primary text-white font-bold py-2 px-4 rounded"
         onClick={() => signIn()}
       >
         Sign in
+      </button> */}
+      <button
+        className="bg-slate-100 hover:bg-slate-200 text-black px-6 py-2 rounded-md capitalize font-bold mt-1"
+        onClick={() => handleCreateCheckoutSession(plan)}
+      >
+        Go To Checkout
       </button>
     </div>
   );

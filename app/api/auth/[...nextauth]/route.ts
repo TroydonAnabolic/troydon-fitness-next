@@ -1,12 +1,13 @@
-import { prisma } from "@/prisma/shared-client";
+import prisma from "@/prisma/prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import EmailProvider from "next-auth/providers/email";
 import GitHubProvider from "next-auth/providers/github";
 import Stripe from "stripe";
+import type { Adapter } from "next-auth/adapters";
 
-const authOptions = {
-  adapter: PrismaAdapter(prisma),
+export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
     EmailProvider({
       server: {
@@ -26,28 +27,28 @@ const authOptions = {
   ],
   callbacks: {
     async session({ session, user }: any) {
-      session.user.id = user.id;
+      session!.user!.id = user.id;
+      session!.user!.stripeCustomerId = user.stripeCustomerId;
+      session!.user!.isActive = user.isActive;
       return session;
     },
   },
   events: {
     createUser: async ({ user }: any) => {
-      // Create stripe API client using the secret key env variable
-      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
         apiVersion: "2023-10-16",
       });
-      // Create a stripe customer for the user with their email address
+
       await stripe.customers
         .create({
           email: user.email!,
+          name: user.name!,
         })
-        .then(async (customer: any) => {
-          // Use the Prisma Client to update the user in the database with their new Stripe customer ID
+        .then(async (customer) => {
           return prisma.user.update({
             where: { id: user.id },
             data: {
               stripeCustomerId: customer.id,
-              //isBasic: user.isBasic || false,
             },
           });
         });
