@@ -47,6 +47,7 @@ const authOptions = {
             where: { id: user.id },
             data: {
               stripeCustomerId: customer.id,
+              //isBasic: user.isBasic || false,
             },
           });
         });

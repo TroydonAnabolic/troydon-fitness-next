@@ -1,5 +1,4 @@
 import { signIn } from "next-auth/react";
-import React from "react";
 
 type Props = {
   closeModal: () => void;

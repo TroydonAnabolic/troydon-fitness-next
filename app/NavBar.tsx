@@ -1,10 +1,8 @@
 "use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { usePathname } from "next/navigation";
 
 function AuthButton() {
   const { data: session } = useSession();
