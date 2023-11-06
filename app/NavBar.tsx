@@ -1,11 +1,12 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
+import SubscriptionPlansModal from "./components/Modals/SubscriptionPlansModal";
 
 function AuthButton() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   if (session) {
     return (
@@ -13,7 +14,7 @@ function AuthButton() {
         <span className="pl-2">{session?.user?.name}</span>
         <button
           className="btn btn-primary text-white font-bold py-2 px-4 rounded"
-          onClick={() => signOut()}
+          onClick={() => signOut({ callbackUrl: "/" })}
         >
           Sign out
         </button>
@@ -21,25 +22,13 @@ function AuthButton() {
     );
   }
 
-  function handleCreateCheckoutSession(plan: any): void {
-    throw new Error("Function not implemented.");
-  }
-
-  let plan: any = "Basic";
-
   return (
     <div className="flex items-center space-x-2 pr-4 pl-4">
-      {/* <button
+      <button
         className="btn btn-primary text-white font-bold py-2 px-4 rounded"
         onClick={() => signIn()}
       >
         Sign in
-      </button> */}
-      <button
-        className="bg-slate-100 hover:bg-slate-200 text-black px-6 py-2 rounded-md capitalize font-bold mt-1"
-        onClick={() => handleCreateCheckoutSession(plan)}
-      >
-        Go To Checkout
       </button>
     </div>
   );
@@ -47,6 +36,15 @@ function AuthButton() {
 
 // Nav bar sample from daisy UI Tailwind
 const NavBar = () => {
+  const modalRef = useRef<HTMLDialogElement | null>(null);
+  const [plan, setPlan] = useState<string>("price_1O9LjFBYYYaaMgOAcaEDBXfQ");
+
+  const openModal = () => {
+    if (modalRef.current) {
+      modalRef.current.showModal();
+    }
+  };
+
   return (
     <div className="navbar bg-white dark:bg-sky-700">
       <div className="navbar-start">
@@ -150,6 +148,12 @@ const NavBar = () => {
         </Link>
         <AuthButton />
       </div>
+      {/* TODO: Conditionally render this component when the user is not subscribed, if can upgrade render upgrade, if max plan then render nothing */}
+      <SubscriptionPlansModal
+        openModal={openModal}
+        modalRef={modalRef}
+        selectedPlan={{ plan: plan, setPlan: setPlan }}
+      />
     </div>
   );
 };
