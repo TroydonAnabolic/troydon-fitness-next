@@ -35,9 +35,14 @@ export const authOptions: NextAuthOptions = {
   },
   events: {
     createUser: async ({ user }: any) => {
-      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-        apiVersion: "2023-10-16",
-      });
+      const stripe = new Stripe(
+        process.env.NODE_ENV === "production"
+          ? process.env.STRIPE_SECRET_KEY!
+          : process.env.STRIPE_SECRET_KEY_LOCAL!,
+        {
+          apiVersion: "2023-10-16",
+        }
+      );
 
       await stripe.customers
         .create({

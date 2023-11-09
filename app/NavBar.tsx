@@ -37,7 +37,6 @@ function AuthButton() {
 // Nav bar sample from daisy UI Tailwind
 const NavBar = () => {
   const modalRef = useRef<HTMLDialogElement | null>(null);
-  const [plan, setPlan] = useState<string>("price_1O9LjFBYYYaaMgOAcaEDBXfQ");
 
   const openModal = () => {
     if (modalRef.current) {
@@ -149,11 +148,7 @@ const NavBar = () => {
         <AuthButton />
       </div>
       {/* TODO: Conditionally render this component when the user is not subscribed, if can upgrade render upgrade, if max plan then render nothing */}
-      <SubscriptionPlansModal
-        openModal={openModal}
-        modalRef={modalRef}
-        selectedPlan={{ plan: plan, setPlan: setPlan }}
-      />
+      <SubscriptionPlansModal openModal={openModal} modalRef={modalRef} />
     </div>
   );
 };
