@@ -55,19 +55,25 @@ interface SubscriptionPlansModalProps {
 }
 
 // This gets called on every request
+// export const getServerSideProps = (async (context) => {
+//   // Fetch data from external API
+//   const session = await getServerSession();
+//   const userSubscription = await getUserSubscriptionStatus(session?.user);
+
+//   const userData: UserData = { userSubscription, session };
+
+//   // Pass data to the page via props
+//   return { props: { userData } };
+// }) satisfies GetServerSideProps<{
+//   userData: UserData;
+// }>;
+
 export async function getServerSideProps() {
-  // Fetch data from external API
   const session = await getServerSession();
   const userSubscription = await getUserSubscriptionStatus(session?.user);
+  const userData: UserData = { userSubscription, session };
 
-  const userData = { userSubscription, session };
-
-  // Pass data to the page via props
-  return {
-    props: { userData },
-  } satisfies GetServerSideProps<{
-    userData: UserData;
-  }>;
+  return userData;
 }
 
 type UserData = {
@@ -81,8 +87,7 @@ type UserData = {
 function SubscriptionPlansModal({
   openModal,
   modalRef,
-}: SubscriptionPlansModalProps &
-  InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: SubscriptionPlansModalProps) {
   const [plan, setPlan] = useState<string>(
     process.env.NODE_ENV === "production"
       ? "price_1O8gTXBYYYaaMgOAAlgsSdiz"
@@ -90,12 +95,12 @@ function SubscriptionPlansModal({
   );
   const [userSubscription, setUserSubscription] = useState<any>(null);
 
+  const { data: session } = useSession();
+
   useEffect(() => {
     async function fetchUserSubscription() {
-      if (session) {
-        const userSubscription = await getUserSubscriptionStatus(session.user);
-        setUserSubscription(userSubscription);
-      }
+      const userData: UserData = await getServerSideProps();
+      setUserSubscription(userData.userSubscription);
     }
 
     fetchUserSubscription();
