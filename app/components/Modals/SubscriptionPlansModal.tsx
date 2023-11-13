@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { getServerSession } from "next-auth";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { notFound } from "next/navigation";
 
 const subscriptionPlans = [
   {
@@ -68,20 +69,16 @@ interface SubscriptionPlansModalProps {
 //   userData: UserData;
 // }>;
 
-export async function getServerSideProps() {
-  const session = await getServerSession();
-  const userSubscription = await getUserSubscriptionStatus(session?.user);
-  const userData: UserData = { userSubscription, session };
-
-  return userData;
+export async function generateMetadata({ params: { id } }: any) {
+  const userSubscription = await getUserSubscriptionStatus(id);
+  return userSubscription
+    ? { isActive: userSubscription.isActive, isBasic: userSubscription.isBasic }
+    : notFound();
 }
 
-type UserData = {
-  userSubscription: {
-    isActive: boolean;
-    isBasic: boolean;
-  } | null;
-  session: any;
+type UserSubscription = {
+  isActive: boolean;
+  isBasic: boolean;
 };
 
 function SubscriptionPlansModal({
@@ -96,11 +93,22 @@ function SubscriptionPlansModal({
   const [userSubscription, setUserSubscription] = useState<any>(null);
 
   const { data: session } = useSession();
+  //let fetchedSubscription: UserSubscription;
+
+  // if (session) {
+  //   const fetchedSubscription = await getUserSubscriptionStatus(
+  //     session?.user?.id
+  //   );
+  // }
 
   useEffect(() => {
     async function fetchUserSubscription() {
-      const userData: UserData = await getServerSideProps();
-      setUserSubscription(userData.userSubscription);
+      if (session) {
+        const fetchedSubscription = await getUserSubscriptionStatus(
+          session?.user?.id
+        );
+        setUserSubscription(fetchedSubscription);
+      }
     }
 
     fetchUserSubscription();
@@ -147,6 +155,41 @@ function SubscriptionPlansModal({
     }
   }
 
+  async function handleCancelSubscription(plan: string): Promise<void> {
+    try {
+      console.log("Selected plan: " + plan);
+
+      const res = await fetch(`/api/stripe/cancel-subscription`, {
+        method: "POST",
+        body: JSON.stringify({ productId: plan }), // Assuming productId is needed for the session creation
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`Error cancelling subscription: ${res.status}`);
+      }
+
+      const checkoutSession = await res.json();
+      const stripe = await getStripe();
+
+      const { error } = await stripe!.redirectToCheckout({
+        sessionId: checkoutSession.session.id,
+      });
+
+      if (error) {
+        throw new Error(
+          `Error redirecting to cancel subscription: ${error.message}`
+        );
+      }
+
+      console.log("Successfully redirected to cancel subscription");
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
+
   if (!session) {
     return null; // Render nothing if there is no active session
   }
@@ -154,7 +197,7 @@ function SubscriptionPlansModal({
   return (
     <div className="ml-4">
       <button className="btn btn-secondary" onClick={openModal}>
-        Subscribe
+        Subscription
       </button>
       <dialog
         id="subscription_modal"
@@ -223,27 +266,41 @@ export function SubscriptionCard({
           selectedPlan.plan === product.productId
             ? "-translate-y-2"
             : "hover:-translate-y-2"
-        } transition-all w-full max-w-[21rem] min-h-[22rem] bg-black`}
+        } transition-all w-full max-w-[21rem] min-h-[22rem] bg-black flex flex-col`}
         onClick={() => selectedPlan.setPlan(product.productId)}
       >
-        <div className="font-bold text-3xl mb-2 capitalize">{product.name}</div>
-        <div className="flex items-baseline mb-2">
-          <div className="text-3xl mr-2">${product.price}</div> Per{" "}
-          {product.type}
+        <div className="flex-grow">
+          {" "}
+          {/* Add flex-grow class */}
+          <div className="font-bold text-3xl mb-2 capitalize">
+            {product.name}
+          </div>
+          <div className="flex items-baseline mb-2">
+            <div className="text-3xl mr-2">${product.price}</div> Per{" "}
+            {product.type}
+          </div>
+          <ul className="list-disc pl-4">
+            {product.description.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
         </div>
-        <ul className="list-disc pl-4 ">
-          {product.description.map((item, index) => (
-            <li key={index}>{item}</li>
-          ))}
-        </ul>
+
+        {/* Move the "Active" element to the bottom */}
         {isBasicAndActiveSubscription && (
-          <div className="bg-green-500 p-2 text-white mb-2 rounded">
-            Active Subscription
+          <div>
+            <div className="mt-auto bg-green-500 p-2 text-white text-center mb-2 rounded">
+              Active
+            </div>
+            <button className="btn btn-secondary text-white rounded w-full">
+              Cancel
+            </button>
           </div>
         )}
       </div>
     );
   }
+
   return (
     <div
       className={`p-10 border-2 border-neutral-400 text-neutral-400 w-full max-w-[21rem] min-h-[22rem] bg-black`}

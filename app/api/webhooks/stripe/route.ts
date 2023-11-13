@@ -28,8 +28,8 @@ const webhookHandler = async (req: NextRequest) => {
 
     // Getting the data we want from the event
     const subscription = event.data.object as Stripe.Subscription;
-    const session = await getServerSession();
-    const user: User | undefined = session?.user;
+    // const session = await getServerSession();
+    // const user: User | undefined = session?.user;
 
     switch (event.type) {
       case "customer.subscription.created":
@@ -37,7 +37,7 @@ const webhookHandler = async (req: NextRequest) => {
         await prisma.user.update({
           // Find the customer in our database with the Stripe customer ID linked to this purchase
           where: {
-            id: user?.id,
+            // id: user?.id,
             stripeCustomerId: subscription.customer as string,
           },
           // Update that customer so their status is now active
@@ -52,7 +52,7 @@ const webhookHandler = async (req: NextRequest) => {
         await prisma.user.update({
           // Find the customer in our database with the Stripe customer ID linked to this purchase
           where: {
-            id: user?.id,
+            // id: user?.id,
             stripeCustomerId: subscription.customer as string,
           },
           // Update that customer so their status is now active

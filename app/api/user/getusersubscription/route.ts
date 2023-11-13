@@ -5,7 +5,8 @@ import prisma from "@/prisma/prisma";
 
 const getUserSubscriptionHandler = async (req: NextRequest) => {
   console.log("Received request");
-  const body = await req.json(); // body
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get("id") as string | undefined;
 
   const session = await getServerSession(authOptions);
 
@@ -23,7 +24,7 @@ const getUserSubscriptionHandler = async (req: NextRequest) => {
 
   try {
     const userSubscription = await prisma.user.findUnique({
-      where: { id: body.id },
+      where: { id: id },
       select: {
         isActive: true,
         isBasic: true,
@@ -35,7 +36,7 @@ const getUserSubscriptionHandler = async (req: NextRequest) => {
       return NextResponse.json(
         {
           error: {
-            code: "stripe-error",
+            code: "user-not-found",
             message: "Could not find user subscription",
           },
         },
@@ -43,10 +44,7 @@ const getUserSubscriptionHandler = async (req: NextRequest) => {
       );
     }
 
-    return NextResponse.json(
-      { userSubscription: userSubscription },
-      { status: 200 }
-    );
+    return NextResponse.json(userSubscription, { status: 200 });
   } catch (err: any) {
     const errorMessage = err instanceof Error ? err.message : "Unknown error";
     // On error, log and return the error message.
@@ -56,7 +54,7 @@ const getUserSubscriptionHandler = async (req: NextRequest) => {
     return NextResponse.json(
       {
         error: {
-          message: `Webhook Error: ${errorMessage}`,
+          message: `Error getting user: ${errorMessage}`,
         },
       },
       { status: 400 }
