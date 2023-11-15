@@ -1,9 +1,49 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
-import React from "react";
+import React, { useRef, useState } from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import SubscriptionPlansModal from "./components/Modals/SubscriptionPlansModal";
+
+function AuthButton() {
+  const { data: session, status } = useSession();
+
+  if (session) {
+    return (
+      <div className="flex items-center space-x-2">
+        <span className="pl-2">{session?.user?.name}</span>
+        <button
+          className="btn btn-primary text-white font-bold py-2 px-4 rounded"
+          onClick={() => signOut({ callbackUrl: "/" })}
+        >
+          Sign out
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center space-x-2 pr-4 pl-4">
+      <button
+        className="btn btn-primary text-white font-bold py-2 px-4 rounded"
+        onClick={() => signIn()}
+      >
+        Sign in
+      </button>
+    </div>
+  );
+}
 
 // Nav bar sample from daisy UI Tailwind
 const NavBar = () => {
+  const modalRef = useRef<HTMLDialogElement | null>(null);
+
+  const openModal = () => {
+    if (modalRef.current) {
+      modalRef.current.showModal();
+    }
+  };
+
   return (
     <div className="navbar bg-white dark:bg-sky-700">
       <div className="navbar-start">
@@ -105,7 +145,10 @@ const NavBar = () => {
         <Link href="/appointments" className="btn">
           Book Appointment
         </Link>
+        <AuthButton />
       </div>
+      {/* TODO: Conditionally render this component when the user is not subscribed, if can upgrade render upgrade, if max plan then render nothing */}
+      <SubscriptionPlansModal openModal={openModal} modalRef={modalRef} />
     </div>
   );
 };
