@@ -45,6 +45,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   stripeCustomerId        String?            @unique
+  activeSubscriptionId    String?
   isActive                Boolean            @default(false)
   isBasic                 Boolean            @default(false)
 }

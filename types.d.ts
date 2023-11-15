@@ -23,3 +23,9 @@ type BlogPost = {
   author: string;
   description: string;
 };
+
+type UserSubscription = {
+  isActive: boolean;
+  isBasic: boolean;
+  activeSubscriptionId?: string;
+};

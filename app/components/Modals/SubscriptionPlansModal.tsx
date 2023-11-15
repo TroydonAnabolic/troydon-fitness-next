@@ -2,9 +2,9 @@ import getStripe from "@/app/utils/getStripe";
 import getUserSubscriptionStatus from "@/app/utils/prisma";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
-import { getServerSession } from "next-auth";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { notFound } from "next/navigation";
+import { UserSubscription } from "@/types";
+import { SubscriptionCard } from "../Subscription/SubscriptionCard";
 
 const subscriptionPlans = [
   {
@@ -55,31 +55,12 @@ interface SubscriptionPlansModalProps {
   modalRef: React.RefObject<HTMLDialogElement>;
 }
 
-// This gets called on every request
-// export const getServerSideProps = (async (context) => {
-//   // Fetch data from external API
-//   const session = await getServerSession();
-//   const userSubscription = await getUserSubscriptionStatus(session?.user);
-
-//   const userData: UserData = { userSubscription, session };
-
-//   // Pass data to the page via props
-//   return { props: { userData } };
-// }) satisfies GetServerSideProps<{
-//   userData: UserData;
-// }>;
-
 export async function generateMetadata({ params: { id } }: any) {
-  const userSubscription = await getUserSubscriptionStatus(id);
-  return userSubscription
-    ? { isActive: userSubscription.isActive, isBasic: userSubscription.isBasic }
-    : notFound();
+  const userSubscription: UserSubscription = await getUserSubscriptionStatus(
+    id
+  );
+  return userSubscription ? userSubscription : notFound();
 }
-
-type UserSubscription = {
-  isActive: boolean;
-  isBasic: boolean;
-};
 
 function SubscriptionPlansModal({
   openModal,
@@ -90,16 +71,15 @@ function SubscriptionPlansModal({
       ? "price_1O8gTXBYYYaaMgOAAlgsSdiz"
       : "price_1OANZ0BYYYaaMgOAItOcV9X7"
   );
-  const [userSubscription, setUserSubscription] = useState<any>(null);
+  const [userSubscription, setUserSubscription] =
+    useState<UserSubscription | null>(null);
 
   const { data: session } = useSession();
-  //let fetchedSubscription: UserSubscription;
 
-  // if (session) {
-  //   const fetchedSubscription = await getUserSubscriptionStatus(
-  //     session?.user?.id
-  //   );
-  // }
+  const onCancelSubscription = () => {
+    // Callback function to handle subscription cancellation
+    setUserSubscription(null);
+  };
 
   useEffect(() => {
     async function fetchUserSubscription() {
@@ -120,9 +100,22 @@ function SubscriptionPlansModal({
     }
   };
 
+  // Find the subscription with isBasic set to true
+  const activeSubscription = subscriptionPlans[0].subscriptions.find(
+    (subscription) => subscription.isBasic
+  );
+
+  // const isSameAsActivePlan = false; // Uncomment for testing
+  const isSameAsActivePlan =
+    userSubscription?.isBasic && plan === activeSubscription?.productId;
+
   async function handleCreateCheckoutSession(plan: string): Promise<void> {
     try {
-      console.log("Selected plan: " + plan);
+      if (isSameAsActivePlan) {
+        // Plan is the same as the active plan, handle accordingly
+        alert("Plan is the same as the active plan.");
+        return;
+      }
 
       const res = await fetch(`/api/stripe/checkout-session`, {
         method: "POST",
@@ -155,41 +148,6 @@ function SubscriptionPlansModal({
     }
   }
 
-  async function handleCancelSubscription(plan: string): Promise<void> {
-    try {
-      console.log("Selected plan: " + plan);
-
-      const res = await fetch(`/api/stripe/cancel-subscription`, {
-        method: "POST",
-        body: JSON.stringify({ productId: plan }), // Assuming productId is needed for the session creation
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!res.ok) {
-        throw new Error(`Error cancelling subscription: ${res.status}`);
-      }
-
-      const checkoutSession = await res.json();
-      const stripe = await getStripe();
-
-      const { error } = await stripe!.redirectToCheckout({
-        sessionId: checkoutSession.session.id,
-      });
-
-      if (error) {
-        throw new Error(
-          `Error redirecting to cancel subscription: ${error.message}`
-        );
-      }
-
-      console.log("Successfully redirected to cancel subscription");
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  }
-
   if (!session) {
     return null; // Render nothing if there is no active session
   }
@@ -213,6 +171,7 @@ function SubscriptionPlansModal({
                 product={product}
                 userSubscription={userSubscription} // Pass userSubscription to the card component
                 key={index}
+                onCancelSubscription={onCancelSubscription} // Pass the callback function
               />
             ))}
 
@@ -220,8 +179,11 @@ function SubscriptionPlansModal({
           </div>
           <div className="mt-4">
             <button
-              className="btn btn-accent mr-2"
+              className={`btn btn-accent mr-2 ${
+                isSameAsActivePlan ? "cursor-not-allowed" : ""
+              }`}
               onClick={() => handleCreateCheckoutSession(plan)}
+              disabled={isSameAsActivePlan}
             >
               Got To Checkout
             </button>
@@ -236,84 +198,3 @@ function SubscriptionPlansModal({
 }
 
 export default SubscriptionPlansModal;
-
-export function SubscriptionCard({
-  selectedPlan,
-  product,
-  userSubscription,
-}: {
-  selectedPlan: {
-    plan: string;
-    setPlan: React.Dispatch<React.SetStateAction<string>>;
-  };
-  product: {
-    name: string;
-    type: string;
-    price: string;
-    productId: string;
-    description: string[];
-    active: boolean;
-  };
-  userSubscription: any;
-}) {
-  const isBasicAndActiveSubscription =
-    userSubscription?.isActive && userSubscription?.isBasic;
-
-  if (product.active) {
-    return (
-      <div
-        className={`p-10 border-2 hover:cursor-pointer ${
-          selectedPlan.plan === product.productId
-            ? "-translate-y-2"
-            : "hover:-translate-y-2"
-        } transition-all w-full max-w-[21rem] min-h-[22rem] bg-black flex flex-col`}
-        onClick={() => selectedPlan.setPlan(product.productId)}
-      >
-        <div className="flex-grow">
-          {" "}
-          {/* Add flex-grow class */}
-          <div className="font-bold text-3xl mb-2 capitalize">
-            {product.name}
-          </div>
-          <div className="flex items-baseline mb-2">
-            <div className="text-3xl mr-2">${product.price}</div> Per{" "}
-            {product.type}
-          </div>
-          <ul className="list-disc pl-4">
-            {product.description.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Move the "Active" element to the bottom */}
-        {isBasicAndActiveSubscription && (
-          <div>
-            <div className="mt-auto bg-green-500 p-2 text-white text-center mb-2 rounded">
-              Active
-            </div>
-            <button className="btn btn-secondary text-white rounded w-full">
-              Cancel
-            </button>
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  return (
-    <div
-      className={`p-10 border-2 border-neutral-400 text-neutral-400 w-full max-w-[21rem] min-h-[22rem] bg-black`}
-    >
-      <div className="font-bold text-3xl mb-2 capitalize">{product.name}</div>
-      <div className="flex items-baseline mb-2">
-        <div className="text-3xl mr-2">${product.price}</div> Per {product.type}
-      </div>
-      <ul className="list-disc pl-4 ">
-        {product.description.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}

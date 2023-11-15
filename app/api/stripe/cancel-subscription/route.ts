@@ -29,41 +29,21 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const checkoutSession = await stripe.checkout.sessions.create({
-    mode: "subscription",
-    customer: session.user.stripeCustomerId,
-    line_items: [
-      {
-        price: body.productId,
-        quantity: 1,
-      },
-    ],
-    success_url:
-      (process.env.NODE_ENV === "production"
-        ? process.env.NEXTAUTH_URL
-        : process.env.NEXT_PUBLIC_NEXTAUTH_URL) + `/success`,
-    cancel_url:
-      (process.env.NODE_ENV === "production"
-        ? process.env.NEXTAUTH_URL
-        : process.env.NEXT_PUBLIC_NEXTAUTH_URL) + `/error`,
-    subscription_data: {
-      metadata: {
-        payingUserId: session.user.id,
-      },
-    },
-  });
+  const subscription = await stripe.subscriptions.cancel(
+    body.activeSubscriptionId
+  );
 
-  if (!checkoutSession.url) {
+  if (!subscription.cancellation_details?.reason) {
     return NextResponse.json(
       {
         error: {
           code: "stripe-error",
-          message: "Could not create checkout session",
+          message: "Could not cancel subscription",
         },
       },
       { status: 500 }
     );
   }
 
-  return NextResponse.json({ session: checkoutSession }, { status: 200 });
+  return NextResponse.json({ subscription: subscription }, { status: 200 });
 }

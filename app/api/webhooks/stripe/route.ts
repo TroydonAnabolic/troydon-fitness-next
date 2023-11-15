@@ -45,6 +45,7 @@ const webhookHandler = async (req: NextRequest) => {
             isActive: true,
             // TODO: later find a way to dynamically set isBasic or isPro etc for now only allow isBasic
             isBasic: true,
+            activeSubscriptionId: subscription.id,
           },
         });
         break;
@@ -59,6 +60,7 @@ const webhookHandler = async (req: NextRequest) => {
           data: {
             isActive: false,
             isBasic: false,
+            activeSubscriptionId: null,
           },
         });
         break;

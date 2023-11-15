@@ -1,5 +1,6 @@
 import prisma from "@/prisma/prisma";
 import { createUrlWithParams } from "./http";
+import { UserSubscription } from "@/types";
 
 async function getUserSubscripstionStatus(user: any) {
   try {
@@ -24,7 +25,9 @@ type QueryParams = {
   id: string;
 };
 
-export async function getUserSubscriptionStatus(id: string | undefined) {
+export async function getUserSubscription(
+  id: string | undefined
+): Promise<UserSubscription> {
   const baseUrl = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/user/getusersubscription`;
 
   const queryParams: QueryParams = {
@@ -42,4 +45,4 @@ export async function getUserSubscriptionStatus(id: string | undefined) {
   return response.json();
 }
 
-export default getUserSubscriptionStatus;
+export default getUserSubscription;

@@ -24,25 +24,26 @@ const getUserSubscriptionHandler = async (req: NextRequest) => {
 
   try {
     const userSubscription = await prisma.user.findUnique({
-      where: { id: id },
+      where: { id: id, isActive: true, isBasic: true },
       select: {
         isActive: true,
         isBasic: true,
+        activeSubscriptionId: true,
         // Add other fields you want to select here
       },
     });
 
-    if (!userSubscription) {
-      return NextResponse.json(
-        {
-          error: {
-            code: "user-not-found",
-            message: "Could not find user subscription",
-          },
-        },
-        { status: 500 }
-      );
-    }
+    // if (!userSubscription) {
+    //   return NextResponse.json(
+    //     {
+    //       error: {
+    //         code: "user-not-found",
+    //         message: "Could not find user subscription",
+    //       },
+    //     },
+    //     { status: 500 }
+    //   );
+    // }
 
     return NextResponse.json(userSubscription, { status: 200 });
   } catch (err: any) {
