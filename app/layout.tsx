@@ -8,6 +8,7 @@ import NavBar from "./NavBar";
 import Footer from "./Footer";
 import { getServerSession } from "next-auth";
 import SessionProvider from "./components/Auth/SessionProvider";
+import { authOptions } from "./utils/authOptions";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   return (
     <html lang="en" data-theme="dracula">
