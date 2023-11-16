@@ -12,10 +12,7 @@ const stripe = new Stripe(
   }
 );
 
-const webhookSecret: string =
-  process.env.NODE_ENV === "production"
-    ? process.env.STRIPE_WEBHOOK_SECRET!
-    : "whsec_a6a9cf1d271a0a5d7d18ac8a0ea42db183dfeb428cca03409c72add5e6ad359c";
+const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
 
 const webhookHandler = async (req: NextRequest) => {
   try {
