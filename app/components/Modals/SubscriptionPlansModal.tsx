@@ -15,7 +15,7 @@ const subscriptionPlans = [
         price: "4.99",
         productId:
           process.env.NODE_ENV === "production"
-            ? "price_1O8gTXBYYYaaMgOAAlgsSdiz"
+            ? "price_1OCwr3BYYYaaMgOAqo2VUs5k" // "price_1O8gTXBYYYaaMgOAAlgsSdiz"
             : "price_1OANZ0BYYYaaMgOAItOcV9X7",
         description: ["Unlimited access to blog"],
         active: true,
@@ -68,7 +68,7 @@ function SubscriptionPlansModal({
 }: SubscriptionPlansModalProps) {
   const [plan, setPlan] = useState<string>(
     process.env.NODE_ENV === "production"
-      ? "price_1O8gTXBYYYaaMgOAAlgsSdiz"
+      ? "price_1OCwr3BYYYaaMgOAqo2VUs5k" // "price_1O8gTXBYYYaaMgOAAlgsSdiz"
       : "price_1OANZ0BYYYaaMgOAItOcV9X7"
   );
   const [userSubscription, setUserSubscription] =
