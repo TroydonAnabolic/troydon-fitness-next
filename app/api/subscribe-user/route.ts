@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { email }: any = req.body;
+  const body = await req.json();
+  const email = body.email;
 
-  console.log({ email });
+  console.log(email);
 
   if (!email) {
     return NextResponse.json(

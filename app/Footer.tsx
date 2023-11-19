@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import NewsLetterSignUpForm from "./components/Newsletter/NewsLetterSignUpForm";
 
 const Footer = () => {
   return (
@@ -63,6 +64,7 @@ const Footer = () => {
           </Link>
         </div>
       </nav>
+      <NewsLetterSignUpForm />
     </footer>
   );
 };
