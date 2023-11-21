@@ -4,7 +4,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const email = body.email;
 
-  console.log(email);
+  console.log(`Email to subscribe is ${email}`);
 
   if (!email) {
     return NextResponse.json(
@@ -40,15 +40,18 @@ export async function POST(req: NextRequest) {
     );
 
     if (response.status >= 400) {
+      const errorMessage = await response.json(); // Extract the error message from the Mailchimp response
+      console.log(
+        `There was an error subscribing to the newsletter: ${errorMessage.detail}`
+      );
       return NextResponse.json(
         {
           error: {
-            code: "subscription-error",
-            message: `There was an error subscribing to the newsletter.
-            Hit me up troydonfitness@smartaitrainer.com and I'll add you the old fashioned way :(.`,
+            code: errorMessage.title || "subscription-error",
+            message: errorMessage.detail || "Unknown error",
           },
         },
-        { status: 400 }
+        { status: errorMessage.status }
       );
     }
 

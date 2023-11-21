@@ -25,22 +25,26 @@ export default function NewsLetterSignUpForm() {
         }),
       });
 
-      if (!res.ok) {
-        throw new Error(`Error Subscribing: ${res.status}`);
-      }
-
       const emailSubscription = await res.json();
+
+      if (!res.ok) {
+        throw new Error(emailSubscription.error.code);
+      }
 
       if (emailSubscription.error || !emailSubscription) {
         alert("Error subscribing to newsletter");
         throw new Error(
-          `Error redirecting to checkout: ${emailSubscription.error.message}`
+          `Error subscribing to newsletter: ${emailSubscription.error.message}`
         );
-      } else if (emailSubscription.status === 200) {
+      } else if (!emailSubscription.error) {
         alert("Successfully subscribed to newsletter!");
       }
     } catch (error: any) {
-      console.error(error.message);
+      if (error.message == "Member Exists") {
+        alert("Already subscribed to newsletter!");
+      } else {
+        alert("Error subscribing to newsletter");
+      }
     }
   };
 
