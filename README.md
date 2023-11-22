@@ -5,7 +5,7 @@
 Component located
 app\components\Newsletter\NewsLetterSignUpForm.tsx
 The function renders the newsletter form in the footer of the page
-![Email newsletter form](/readme/email-newsletter.png)
+![Email newsletter form](/public/readme/email-newsletter.png)
 
 ```JavaScript
 export  default  function  NewsLetterSignUpForm() {
