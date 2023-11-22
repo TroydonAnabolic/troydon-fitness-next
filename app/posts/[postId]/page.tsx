@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getPostData, getSortedPostsData } from "@/lib/posts";
 import getFormattedDate from "@/lib/getFormattedDate";
+import { authOptions } from "@/app/utils/authOptions";
+import { getServerSession } from "next-auth";
 
 export function generateStaticParams() {
   const posts = getSortedPostsData();
@@ -32,8 +34,9 @@ export function generateMetadata({ params }: { params: { postId: string } }) {
 export default async function Post({ params }: { params: { postId: string } }) {
   const posts = getSortedPostsData();
   const { postId } = params;
+  const session = await getServerSession(authOptions);
 
-  if (!posts.find((post) => post.id === postId)) notFound();
+  if (!posts.find((post) => post.id === postId) || !session) notFound();
 
   const { title, date, contentHtml } = await getPostData(postId);
 
