@@ -1,5 +1,13 @@
 # Welcome to TroydonFitness
 
+## General
+
+Starting dev server for local development Commands
+
+```Powershell
+npm run dev
+```
+
 ## Email Newsletter
 
 Component located
